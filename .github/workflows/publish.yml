@@ -1,0 +1,80 @@
+# Publishes the package to npm on every version tag push, with a provenance
+# attestation. n8n requires community nodes submitted for verification to be
+# published this way (in force since 1 May 2026). Provenance lets anyone verify
+# that the package on npm was built by this workflow, from this repository and
+# commit.
+#
+# PREREQUISITES
+#
+# @n8n/node-cli 0.23.0 or later (this package pins 0.51.4).
+#
+# ONE-TIME SETUP
+#
+# Option A, OIDC trusted publishing (recommended, no long-lived secret):
+#   1. Log in to npmjs.com and open the package's settings.
+#   2. Under "Publish access", "Trusted Publishers", click "Add a publisher".
+#   3. Select GitHub Actions and fill in:
+#        Repository owner: steffenVoll (or the org that owns the repo)
+#        Repository name:  n8n-nodes-tpsclear
+#        Workflow name:    publish.yml
+#        Environment:      leave blank
+#   4. Leave the NPM_TOKEN secret unset. GitHub's OIDC token is used instead.
+#   A trusted publisher can only be added to a package that already exists on
+#   npm, so the first release goes through Option B; switch to Option A after
+#   it and delete the NPM_TOKEN secret.
+#
+# Option B, npm automation token:
+#   1. On npmjs.com: Access Tokens, Generate New Token, Granular Access Token,
+#      scoped to this package with "Read and write" publish permission.
+#   2. In GitHub: Settings, Secrets and variables, Actions, New secret,
+#      name NPM_TOKEN.
+#
+# TAG CONVENTION
+#
+# Triggers on tags matching "*.*.*" (for example 0.1.0). `npm run release`
+# creates the tag.
+#
+# RELEASE PROCESS
+#
+#   npm run release
+#
+# Lints, builds, prompts for the version bump, updates the changelog, commits,
+# tags and pushes, which triggers this workflow.
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Required to mint an OIDC token for the npm provenance attestation.
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24' # bundles npm 11.5.1 or later, which trusted publishing needs
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release
+        # Publishes to npm with a provenance attestation. Lint and build run as
+        # part of the release. With NPM_TOKEN unset, npm uses the OIDC exchange.
+        run: |
+          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
