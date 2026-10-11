@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-tpsclear",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "n8n community node for TPSClear: screen UK phone numbers against the TPS and CTPS registers, manage your suppression and consent lists, and read API usage",
 	"license": "MIT",
 	"publishConfig": {
