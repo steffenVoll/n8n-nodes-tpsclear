@@ -65,7 +65,7 @@ export const screeningDescription: INodeProperties[] = [
 		required: true,
 		placeholder: 'e.g. +44 20 7946 0018',
 		description:
-			'The UK number to screen, in any common format. Spaces, dashes and brackets are ignored. A number outside the UK comes back as unknown.',
+			'The UK number to screen, in any common format. Spaces, dashes and brackets are ignored. A number outside the UK comes back as unknown. With a live key this is one chargeable check against your TPSClear allowance, including test runs in this editor; a test key (tpsc_test_) screens built-in fixtures for free. A verdict is a snapshot: screen again before calling if it is 27 or more days old.',
 		displayOptions: { show: { ...showOnlyForScreening, operation: ['screen'] } },
 	},
 	{
@@ -76,7 +76,7 @@ export const screeningDescription: INodeProperties[] = [
 		required: true,
 		typeOptions: { rows: 4 },
 		placeholder: 'e.g. +442079460018, +441134960002',
-		description: `Up to ${MAX_SCREEN_NUMBERS} UK numbers separated by commas or new lines, or an expression that returns an array. Each distinct valid UK number is one chargeable check; duplicates and invalid entries are not charged.`,
+		description: `Up to ${MAX_SCREEN_NUMBERS} UK numbers separated by commas or new lines, or an expression that returns an array. Each distinct valid UK number is one chargeable check; duplicates and invalid entries are not charged. That includes test runs in this editor with a live key; a test key (tpsc_test_) screens built-in fixtures for free. A verdict is a snapshot: screen again before calling if it is 27 or more days old.`,
 		displayOptions: { show: { ...showOnlyForScreening, operation: ['screenMany'] } },
 	},
 	{
@@ -108,13 +108,5 @@ export const screeningDescription: INodeProperties[] = [
 					'Tag stored on the audit record, so a later compliance question can be answered per campaign. Letters, digits, spaces and . , : / # _ - only, up to 120 characters.',
 			},
 		],
-	},
-	{
-		displayName:
-			'Each number screened with a live key is one chargeable check against your TPSClear allowance, including test runs in this editor. A test key (tpsc_test_) screens built-in fixtures and is free. A verdict is a snapshot: screen again before calling if it is 27 or more days old.',
-		name: 'screeningNotice',
-		type: 'notice',
-		default: '',
-		displayOptions: { show: { ...showOnlyForScreening, operation: ['screen', 'screenMany'] } },
 	},
 ];

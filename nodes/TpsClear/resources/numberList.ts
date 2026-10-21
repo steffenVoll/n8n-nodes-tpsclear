@@ -75,7 +75,7 @@ export function numberListDescription(resource: ListResource, label: string): IN
 			required: true,
 			typeOptions: { rows: 4 },
 			placeholder: 'e.g. +442079460018, +441134960002',
-			description: `Up to ${capText} UK numbers separated by commas or new lines, or an expression that returns an array`,
+			description: `Up to ${capText} UK numbers separated by commas or new lines, or an expression that returns an array. The list belongs to your TPSClear account, so a change here applies to every key and every connected CRM on the account. Only a live key (tpsc_live_) can change a list; a test key can read it.`,
 			displayOptions: { show: { ...show, operation: ['add'] } },
 		},
 		{
@@ -85,7 +85,7 @@ export function numberListDescription(resource: ListResource, label: string): IN
 			default: '',
 			required: true,
 			placeholder: 'e.g. +44 20 7946 0018',
-			description: `The UK number to take off your ${label}`,
+			description: `The UK number to take off your ${label}. The list belongs to your TPSClear account, so a change here applies to every key and every connected CRM on the account. Only a live key (tpsc_live_) can change a list; a test key can read it.`,
 			displayOptions: { show: { ...show, operation: ['remove'] } },
 		},
 		{
@@ -149,14 +149,6 @@ export function numberListDescription(resource: ListResource, label: string): IN
 					description: 'Why the number is coming off the list, kept in the audit trail',
 				},
 			],
-		},
-		{
-			displayName:
-				'The list belongs to your TPSClear account, so a change here applies to every key and every connected CRM on the account. Only a live key (tpsc_live_) can change a list; a test key can read it.',
-			name: 'listNotice',
-			type: 'notice',
-			default: '',
-			displayOptions: { show: { ...show, operation: ['add', 'remove'] } },
 		},
 	];
 }
