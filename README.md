@@ -65,10 +65,11 @@ Screening operations return flat, single-underscore keys, and every key is prese
 | `safe_to_call` | `true` only for `clean`. Filter on this, not on the status text. |
 | `tps_listed`, `ctps_listed` | The register flags behind the status |
 | `checked_at` | When the registers were checked, ISO 8601 |
+| `recheck_by` | The date to screen the number again, before calling it that day (YYYY-MM-DD). Empty for `unknown`, `suppressed` and `consented`. |
 | `request_id` | The audit record ID. Pass it to Get Record, or quote it if a call is questioned. |
 | `campaign_ref` | The campaign reference you sent, if any |
 
-`unknown` covers both a register check that failed and a number that is not a valid UK line. It is never safe to call. A verdict is a snapshot: screen again before calling if it is 27 or more days old.
+`unknown` covers both a register check that failed and a number that is not a valid UK line. It is never safe to call. A verdict is a snapshot: screen the number again on or before its `recheck_by` date.
 
 `safe_to_call` is `false` for `consented` as well, because the node reports register status; whether your own consent record overrides it is your decision, and the `status` field is there to make it.
 

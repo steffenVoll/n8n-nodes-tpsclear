@@ -22,6 +22,7 @@ interface ScreenApiResult {
 	tpsListed?: unknown;
 	ctpsListed?: unknown;
 	checkedAt?: unknown;
+	recheckBy?: unknown;
 }
 
 interface ScreenApiBody {
@@ -38,6 +39,7 @@ export interface ScreenOutput extends IDataObject {
 	tps_listed: boolean;
 	ctps_listed: boolean;
 	checked_at: string;
+	recheck_by: string;
 	request_id: string;
 	campaign_ref: string;
 }
@@ -68,6 +70,7 @@ export function shapeScreenResult(
 		tps_listed: result.tpsListed === true,
 		ctps_listed: result.ctpsListed === true,
 		checked_at: typeof result.checkedAt === 'string' ? result.checkedAt : '',
+		recheck_by: typeof result.recheckBy === 'string' ? result.recheckBy : '',
 		request_id: requestId,
 		campaign_ref: campaignRef,
 	};

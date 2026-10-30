@@ -25,6 +25,7 @@ const EXPECTED_KEYS = [
 	'tps_listed',
 	'ctps_listed',
 	'checked_at',
+	'recheck_by',
 	'request_id',
 	'campaign_ref',
 ].sort();
@@ -181,6 +182,7 @@ describe('shapeScreenResult', () => {
 			tps_listed: false,
 			ctps_listed: false,
 			checked_at: '',
+			recheck_by: '',
 			request_id: '',
 			campaign_ref: '',
 		});
@@ -192,7 +194,7 @@ describe('shapeScreenResponse', () => {
 		results: [
 			{ phoneNumber: TPS_FIXTURE, tpsListed: true, ctpsListed: false, status: 'tps-listed', checkedAt: '2026-10-10T09:00:00.000Z' },
 			{ phoneNumber: CTPS_FIXTURE, tpsListed: false, ctpsListed: true, status: 'ctps-listed', checkedAt: '2026-10-10T09:00:00.000Z' },
-			{ phoneNumber: CLEAN, tpsListed: false, ctpsListed: false, status: 'clean', checkedAt: '2026-10-10T09:00:00.000Z' },
+			{ phoneNumber: CLEAN, tpsListed: false, ctpsListed: false, status: 'clean', checkedAt: '2026-10-10T09:00:00.000Z', recheckBy: '2026-11-06' },
 		],
 		campaignRef: 'Autumn outbound',
 	};
@@ -210,6 +212,7 @@ describe('shapeScreenResponse', () => {
 		expect(items!.map((i) => i.json.safe_to_call)).toEqual([false, false, true]);
 		expect(items!.map((i) => i.json.tps_listed)).toEqual([true, false, false]);
 		expect(items!.map((i) => i.json.ctps_listed)).toEqual([false, true, false]);
+		expect(items!.map((i) => i.json.recheck_by)).toEqual(['', '', '2026-11-06']);
 	});
 
 	it('leaves request_id and campaign_ref empty rather than absent when the API sends neither', () => {
